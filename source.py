@@ -167,6 +167,7 @@ Dados_Dos_Pais_convertido = converter_int(Dados_Dos_Pais)
 
 print(json.dumps(Dados_Dos_Pais_convertido, indent=4, ensure_ascii=False))
 
+dados_fundamental = Dados_Dos_Pais_convertido
 #############################################
 
 Dados_Dos_Pais = []
