@@ -70,10 +70,10 @@ for _, pai in data[data["Tem filhos"] == "TRUE"].iterrows():
         cep = pai["CEP"]
         endereco = get_address_from_cep(cep)
         Dados_Dos_Pais.append({
-            "Nome do Pai/Mãe": pai["Nome"],
+            "Nome": pai["Nome"],
             "classe": pai['Classe'],
             "Filhos": filhos["Nome"].tolist(),
-            "Número de Telefone": pai["Numero de telefone"],
+            "telefone": pai["Numero de telefone"],
             "CEP": cep,
             "Endereco": endereco,
         })
@@ -83,7 +83,7 @@ Dados_Dos_Pais.sort(key=ordenar_por_classe)
 
 
 for dados in Dados_Dos_Pais:
-    cpf_pai = dados["Nome do Pai/Mãe"]  
+    cpf_pai = dados["Nome"]  
     cep = dados["CEP"]
     endereco = get_address_from_cep(cep)
 
@@ -105,9 +105,9 @@ for dados in Dados_Dos_Pais:
             escolas_proximas.append({
                 "Nome da Escola": escola["escola"],
                 "Tipo": escola['tipo'],
-                "Distância (km)": round(distancia, 1),
+                "Distancia (km)": round(distancia, 1),
                 "Rua": escola["rua"],
-                "Número": escola["numero"],
+                "Numero": escola["numero"],
                 "Bairro": escola["bairro"],
                 "Qtd Alunos": escola["qtd_alunos"],
                 "Qtd Turmas": escola["qtd_turmas"],
@@ -119,17 +119,17 @@ for dados in Dados_Dos_Pais:
                 "Biblioteca": escola["biblioteca"],
                 "Sala Recurso": escola["sala_recurso"],
                 "Gestor": escola["gestor"], 
-                "Índice": _,  
+                "Indice": _,  
             })
 
             # escola["vagas"] = vagas_disponiveis - 0.3333333  # Diminui uma vaga
 
-    escolas_proximas.sort(key=lambda x: x["Distância (km)"])
+    escolas_proximas.sort(key=lambda x: x["Distancia (km)"])
     for i in range(min(3, len(escolas_proximas))):  
-        idx = escolas_proximas[i]["Índice"]  
-        data_escolas.at[idx, "vagas"] = max(0, float(data_escolas.at[idx, "vagas"]) - 0.3333333)  # Garante que não fique negativo
+        idx = escolas_proximas[i]["Indice"]  
+        data_escolas.at[idx, "vagas"] = max(0, float(data_escolas.at[idx, "vagas"]) - 0.3333333)  # Garante que nao fique negativo
     for escola in escolas_proximas:
-        del escola["Índice"]
+        del escola["Indice"]
 
 
     for escola in escolas_proximas[:3]:
@@ -146,29 +146,25 @@ for dados in Dados_Dos_Pais:
             valor_coluna_104 = linha_escola.iloc[0, 104]
             valor_coluna_105 = linha_escola.iloc[0, 105]
 
-            escola["Nota SAEB - 2023 Matemática"] = valor_coluna_103
+            escola["Nota SAEB - 2023 Matematica"] = valor_coluna_103
             escola["Nota SAEB - 2023 Portugues"] = valor_coluna_104
             escola["Nota SAEB - 2023 Media"] = valor_coluna_105
         else:
-            escola["Nota SAEB"] = 'Não existe dados do SAEB para essa escola'
-            print(f"Nota no SAEB da Escola {nome_escola} não encontrada.")
-
+            escola["Nota SAEB"] = 'nao existe dados do SAEB para essa escola'
         # "transporte" 
         linha_transporte = transporte[transporte['escolas'].str.contains(Nome_completo, na=False, case=False)]
         if not linha_transporte.empty:
-            escola["Transporte - Manhã"] = linha_transporte.iloc[0]['manha']
+            escola["Transporte - Manha"] = linha_transporte.iloc[0]['manha']
             escola["Transporte - Tarde"] = linha_transporte.iloc[0]['tarde']
             escola["Transporte - Noite"] = linha_transporte.iloc[0]['noite']
         else:
-            escola["Transporte"] = "Não há dados de transporte publico para essa escola"
+            escola["Transporte"] = "nao ha dados de transporte publico para essa escola"
 
-    dados["Escolas Proximas"] = escolas_proximas[:3]
+    dados["escolas_proximas"] = escolas_proximas[:3]
 
 
 # Converter antes de serializar
 Dados_Dos_Pais_convertido = converter_int(Dados_Dos_Pais)
-
-print(json.dumps(Dados_Dos_Pais_convertido, indent=4, ensure_ascii=False))
 
 dados_fundamental = Dados_Dos_Pais_convertido
 #############################################
@@ -187,10 +183,10 @@ for _, pai in data[data["Tem filhos"] == "TRUE"].iterrows():
         cep = pai["CEP"]
         endereco = get_address_from_cep(cep)
         Dados_Dos_Pais.append({
-            "Nome do Pai/Mãe": pai["Nome"],
+            "Nome": pai["Nome"],
             "classe": pai['Classe'],
             "Filhos": filhos["Nome"].tolist(),
-            "Número de Telefone": pai["Numero de telefone"],
+            "telefone": pai["Numero de telefone"],
             "CEP": cep,
             "Endereco": endereco,
         })
@@ -200,7 +196,7 @@ Dados_Dos_Pais.sort(key=ordenar_por_classe)
 
 
 for dados in Dados_Dos_Pais:
-    cpf_pai = dados["Nome do Pai/Mãe"]  
+    cpf_pai = dados["Nome"]  
     cep = dados["CEP"]
     endereco = get_address_from_cep(cep)
 
@@ -222,9 +218,9 @@ for dados in Dados_Dos_Pais:
             escolas_proximas.append({
                 "Nome da Escola": escola["escola"],
                 "Tipo": escola['tipo'],
-                "Distância (km)": round(distancia, 1),
+                "Distancia (km)": round(distancia, 1),
                 "Rua": escola["rua"],
-                "Número": escola["numero"],
+                "Numero": escola["numero"],
                 "Bairro": escola["bairro"],
                 "Qtd Alunos": escola["qtd_alunos"],
                 "Qtd Turmas": escola["qtd_turmas"],
@@ -236,18 +232,18 @@ for dados in Dados_Dos_Pais:
                 "Biblioteca": escola["biblioteca"],
                 "Sala Recurso": escola["sala_recurso"],
                 "Gestor": escola["gestor"], 
-                "Índice": _,  
+                "Indice": _,  
             })
             
             # Atualiza a quantidade de vagas no CSV, diminuindo 1 vaga
             #escola["vagas"] = vagas_disponiveis - 0.3333333  # Diminui uma vaga
 
-    escolas_proximas.sort(key=lambda x: x["Distância (km)"])
+    escolas_proximas.sort(key=lambda x: x["Distancia (km)"])
     for i in range(min(3, len(escolas_proximas))):  
-        idx = escolas_proximas[i]["Índice"]  
-        data_escolas.at[idx, "vagas"] = max(0, float(data_escolas.at[idx, "vagas"]) - 0.3333333)  # Garante que não fique negativo
+        idx = escolas_proximas[i]["Indice"]  
+        data_escolas.at[idx, "vagas"] = max(0, float(data_escolas.at[idx, "vagas"]) - 0.3333333)  # Garante que nao fique negativo
     for escola in escolas_proximas:
-        del escola["Índice"]
+        del escola["Indice"]
 
     for escola in escolas_proximas[:3]:
         nome_escola = escola['Nome da Escola']
@@ -262,34 +258,41 @@ for dados in Dados_Dos_Pais:
             valor_coluna_104 = linha_escola.iloc[0, 104]
             valor_coluna_105 = linha_escola.iloc[0, 105]
 
-            escola["Nota SAEB - 2023 Matemática"] = valor_coluna_103
+            escola["Nota SAEB - 2023 Matematica"] = valor_coluna_103
             escola["Nota SAEB - 2023 Portugues"] = valor_coluna_104
             escola["Nota SAEB - 2023 Media"] = valor_coluna_105
         else:
-            escola["Nota SAEB"] = 'Não existe dados do SAEB para essa escola'
-            print(f"Nota no SAEB da Escola {nome_escola} não encontrada.")
-
+            escola["Nota SAEB"] = 'nao existe dados do SAEB para essa escola'
+        
         # "transporte" 
         linha_transporte = transporte[transporte['escolas'].str.contains(Nome_completo, na=False, case=False)]
         
         if not linha_transporte.empty:
-            escola["Transporte - Manhã"] = linha_transporte.iloc[0]['manha']
+            escola["Transporte - Manha"] = linha_transporte.iloc[0]['manha']
             escola["Transporte - Tarde"] = linha_transporte.iloc[0]['tarde']
             escola["Transporte - Noite"] = linha_transporte.iloc[0]['noite']
         else:
-            escola["Transporte"] = "Não há dados de transporte publico para essa escola"
+            escola["Transporte"] = "nao ha dados de transporte publico para essa escola"
 
-    dados["Escolas Proximas"] = escolas_proximas[:3]
+    dados["escolas_proximas"] = escolas_proximas[:3]
 
 
 # Converter antes de serializar
 Dados_Dos_Pais_convertido = converter_int(Dados_Dos_Pais)
 
-print(json.dumps(Dados_Dos_Pais_convertido, indent=4, ensure_ascii=False))
-
 dados_bruto = dados_fundamental + Dados_Dos_Pais_convertido
+def replace_nan_with_null(data):
+    if isinstance(data, dict):  # Se for um dicionário, percorre seus valores
+        for key, value in data.items():
+            data[key] = replace_nan_with_null(value)
+    elif isinstance(data, list):  # Se for uma lista, percorre seus elementos
+        for i in range(len(data)):
+            data[i] = replace_nan_with_null(data[i])
+    elif isinstance(data, float) and np.isnan(data):  # Verifica se o valor é nan
+        return None  # Substitui nan por null (None em Python)
+    return data
 
-print(dados_bruto)
+dados_bruto = replace_nan_with_null(dados_bruto)
 
 @app.route('/dados', methods=['GET'])
 def retornar_dados():
