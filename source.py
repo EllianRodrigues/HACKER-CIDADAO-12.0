@@ -6,6 +6,9 @@ from haversine import haversine, Unit
 import pandas as pd
 import numpy as np
 
+from flask import Flask, jsonify
+
+app = Flask(__name__)
 
 # Função para converter todos os np.int64 em int
 def converter_int(obj):
@@ -36,7 +39,7 @@ def calcular_distancia(lat1, lon1, lat2, lon2):
 def ordenar_por_classe(pai):
     if pai["classe"] == "baixa":
         classe_peso = 0
-    elif pai["classe"] == "média":
+    elif pai["classe"] == "media":
         classe_peso = 1
     else: 
         classe_peso = 2
@@ -283,3 +286,16 @@ for dados in Dados_Dos_Pais:
 Dados_Dos_Pais_convertido = converter_int(Dados_Dos_Pais)
 
 print(json.dumps(Dados_Dos_Pais_convertido, indent=4, ensure_ascii=False))
+
+dados_bruto = dados_fundamental + Dados_Dos_Pais_convertido
+
+print(dados_bruto)
+
+@app.route('/dados', methods=['GET'])
+def retornar_dados():
+    response = jsonify(dados_bruto)
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return response
+
+if __name__ == '__main__':
+    app.run(debug=True)
